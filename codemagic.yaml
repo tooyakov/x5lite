@@ -1,41 +1,42 @@
 workflows:
-  ios-build:
-    name: iOS Build
+  ios-testflight:
+    name: iOS TestFlight Deployment
     max_build_duration: 60
     instance_type: mac_mini_m1
     triggering:
       events:
         - push
+        - tag
       branch_patterns:
         - pattern: 'main'
           include: true
+          source: true
     environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.x5lite.app
+      vars:
+        XCODE_PROJECT: "x5lite.xcodeproj"
+        XCODE_SCHEME: "x5lite"
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Show project structure
+      - name: Set build number
         script: |
-          echo "Project structure:"
-          ls -la
-          echo "\nSwift files:"
-          find . -name "*.swift"
+          cd $CM_BUILD_DIR
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_ID")
+          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
       
-      - name: Create basic Xcode project
+      - name: Build iOS app
         script: |
-          echo "Note: This is a Swift source code repository."
-          echo "To build this project, you need to:"
-          echo "1. Open Xcode on a Mac"
-          echo "2. Create a new iOS App project"
-          echo "3. Copy these Swift files into the project"
-          echo "4. Configure signing and capabilities"
-          echo ""
-          echo "Files available:"
-          find x5lite -name "*.swift" -o -name "*.plist" -o -name "*.entitlements"
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
     
     artifacts:
-      - "**/*.swift"
-      - "**/*.plist"
-      - "**/codemagic.yaml"
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     
     publishing:
       email:
@@ -44,3 +45,9 @@ workflows:
         notify:
           success: true
           failure: true
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
+        submit_to_app_store: false
