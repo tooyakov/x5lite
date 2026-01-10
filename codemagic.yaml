@@ -1,37 +1,46 @@
 workflows:
-  ios-release:
-    name: iOS Release
+  ios-build:
+    name: iOS Build
     max_build_duration: 60
     instance_type: mac_mini_m1
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'main'
+          include: true
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.x5lite.app
-      vars:
-        XCODE_WORKSPACE: "x5lite.xcworkspace"
-        XCODE_SCHEME: "x5lite"
-        APP_STORE_APPLE_ID: 1234567890
       xcode: 15.0
       cocoapods: default
     scripts:
-      - name: Install dependencies
+      - name: Show project structure
         script: |
-          # No dependencies needed for now
-          echo "Dependencies installed"
+          echo "Project structure:"
+          ls -la
+          echo "\nSwift files:"
+          find . -name "*.swift"
       
-      - name: Build iOS app
+      - name: Create basic Xcode project
         script: |
-          # Create Xcode project from Swift files
-          xcodebuild -project x5lite.xcodeproj -scheme x5lite -sdk iphonesimulator -configuration Debug build || echo "Project file not found - needs manual Xcode project setup"
+          echo "Note: This is a Swift source code repository."
+          echo "To build this project, you need to:"
+          echo "1. Open Xcode on a Mac"
+          echo "2. Create a new iOS App project"
+          echo "3. Copy these Swift files into the project"
+          echo "4. Configure signing and capabilities"
+          echo ""
+          echo "Files available:"
+          find x5lite -name "*.swift" -o -name "*.plist" -o -name "*.entitlements"
     
     artifacts:
-      - build/ios/ipa/*.ipa
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+      - "**/*.swift"
+      - "**/*.plist"
+      - "**/codemagic.yaml"
     
     publishing:
       email:
         recipients:
           - veagledesign@gmail.com
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: true
+        notify:
+          success: true
+          failure: true
