@@ -10,7 +10,7 @@ workflows:
         - pattern: 'main'
           include: true
     environment:
-      xcode: 15.0
+      xcode: latest
       cocoapods: default
     scripts:
       - name: Show project structure
