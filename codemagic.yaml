@@ -38,11 +38,35 @@ workflows:
           keychain add-certificates
           xcode-project use-profiles
 
+      - name: Create export options
+        script: |
+          cat > $CM_BUILD_DIR/export_options.plist <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>teamID</key><string>F8LA8PC4U6</string>
+          </dict>
+          </plist>
+          PLIST
+
       - name: Build IPA
         script: |
-          xcode-project build-ipa \
-            --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME"
+          xcodebuild \
+            -project x5lite.xcodeproj \
+            -scheme x5lite \
+            -configuration Release \
+            -archivePath $CM_BUILD_DIR/build.xcarchive \
+            archive
+
+          xcodebuild \
+            -exportArchive \
+            -archivePath $CM_BUILD_DIR/build.xcarchive \
+            -exportPath $CM_BUILD_DIR/build \
+            -allowProvisioningUpdates \
+            -exportOptionsPlist $CM_BUILD_DIR/export_options.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
