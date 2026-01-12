@@ -29,10 +29,10 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: "com.tooyakov.x5lite"
-  provisioning_profiles:
-                      - X5LITE_PROFILE_FINAL
-                certificates:
-                                    - DISTRIBUTION_CERT_NEW
+        provisioning_profiles:
+          - X5LITE_PROFILE_FINAL
+        certificates:
+          - DISTRIBUTION_CERT_NEW
 
     scripts:
       - name: Fetch signing files (create profiles) + apply
@@ -58,18 +58,18 @@ workflows:
 
       - name: Build IPA
         script: |
-          xcodebuild \\
-            -project x5lite.xcodeproj \\
-            -scheme x5lite \\
-            -configuration Release \\
-            -archivePath $CM_BUILD_DIR/build.xcarchive \\
+          xcodebuild \
+            -project x5lite.xcodeproj \
+            -scheme x5lite \
+            -configuration Release \
+            -archivePath $CM_BUILD_DIR/build.xcarchive \
             archive
-          
-          xcodebuild \\
-            -exportArchive \\
-            -archivePath $CM_BUILD_DIR/build.xcarchive \\
-            -exportPath $CM_BUILD_DIR/build \\
-            -allowProvisioningUpdates \\
+
+          xcodebuild \
+            -exportArchive \
+            -archivePath $CM_BUILD_DIR/build.xcarchive \
+            -exportPath $CM_BUILD_DIR/build \
+            -allowProvisioningUpdates \
             -exportOptionsPlist $CM_BUILD_DIR/export_options.plist
 
     artifacts:
