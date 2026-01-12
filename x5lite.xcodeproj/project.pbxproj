@@ -13,6 +13,7 @@
 		A1000004 /* WebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000004 /* WebViewManager.swift */; };
 		A1000005 /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000005 /* PaymentService.swift */; };
 		A1000006 /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000006 /* PaymentRequest.swift */; };
+		A1000007 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000009 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		A2000005 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
 		A2000006 /* PaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequest.swift; sourceTree = "<group>"; };
 		A2000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2000009 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2000008 /* x5lite.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = x5lite.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,10 +73,12 @@
 			children = (
 				A2000001 /* x5liteApp.swift */,
 				A2000007 /* Info.plist */,
+		A2000009 /* Assets.xcassets */,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
+		A2000009 /* Assets.xcassets */,
 		A5000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +163,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			A1000007 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
