@@ -27,18 +27,15 @@ workflows:
         XCODE_SCHEME: "x5lite"
 
       ios_signing:
-        distribution_type: app_store
-        bundle_identifier: "com.tooyakov.x5lite"
         provisioning_profiles:
           - X5LITE_PROFILE_FINAL
         certificates:
           - DISTRIBUTION_CERT_NEW
 
     scripts:
-      - name: Fetch signing files (create profiles) + apply
+      - name: Initialize keychain and apply profiles
         script: |
           keychain initialize
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
           keychain add-certificates
           xcode-project use-profiles
 
@@ -50,8 +47,13 @@ workflows:
           <plist version="1.0">
           <dict>
             <key>method</key><string>app-store</string>
-            <key>signingStyle</key><string>automatic</string>
+            <key>signingStyle</key><string>manual</string>
             <key>teamID</key><string>F8LA8PC4U6</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.tooyakov.x5lite</key>
+              <string>x5lite App Store Final</string>
+            </dict>
           </dict>
           </plist>
           PLIST
