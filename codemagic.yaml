@@ -32,9 +32,9 @@ workflows:
 
     scripts:
           - name: Generate app icons
-                  script: |
-                            python3 -m pip install pillow
-                                      python3 generate_icons.py
+                  script: -
+      python3 -m pip install pillow
+      python3 generate_icons.py
       - name: Fetch signing files (create profiles) + apply
         script: |
           keychain initialize
