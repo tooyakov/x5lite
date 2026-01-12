@@ -46,8 +46,13 @@ workflows:
           <plist version="1.0">
           <dict>
             <key>method</key><string>app-store</string>
-            <key>signingStyle</key><string>automatic</string>
+            <key>signingStyle</key><string>manual</string>
             <key>teamID</key><string>F8LA8PC4U6</string>
+                        <key>provisioningProfiles</key>
+                                    <dict>
+                                                  <key>com.tooyakov.x5lite</key>
+                                                                <string>x5lite App Store</string>
+                                                                            </dict>
           </dict>
           </plist>
           PLIST
