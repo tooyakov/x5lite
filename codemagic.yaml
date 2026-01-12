@@ -33,7 +33,7 @@ workflows:
     scripts:
           - name: Generate app icons
                   script: |
-                            pip3 install Pillow
+                            python3 -m pip install pillow
                                       python3 generate_icons.py
       - name: Fetch signing files (create profiles) + apply
         script: |
