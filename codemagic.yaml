@@ -29,6 +29,10 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: "com.tooyakov.x5lite"
+              provisioning_profiles:
+                      - X5LITE_PROFILE_FINAL
+                            certificates:
+                                    - DISTRIBUTION_CERT_NEW
 
     scripts:
       - name: Fetch signing files (create profiles) + apply
