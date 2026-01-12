@@ -31,6 +31,10 @@ workflows:
         bundle_identifier: "com.tooyakov.x5lite"
 
     scripts:
+          - name: Generate app icons
+                  script: |
+                            pip3 install Pillow
+                                      python3 generate_icons.py
       - name: Fetch signing files (create profiles) + apply
         script: |
           keychain initialize
