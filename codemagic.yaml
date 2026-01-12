@@ -26,18 +26,21 @@ workflows:
         XCODE_PROJECT: "x5lite.xcodeproj"
         XCODE_SCHEME: "x5lite"
 
-      # МЫ УБРАЛИ РУЧНЫЕ ФАЙЛЫ. Теперь Codemagic сам решит, что качать.
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: "com.tooyakov.x5lite"
+      # БЛОК IOS_SIGNING УДАЛЕН ПОЛНОСТЬЮ, ЧТОБЫ НЕ МЕШАЛ
 
     scripts:
-      - name: Fetch signing files (force download)
+      - name: Nuclear Option (Revoke all -> Create fresh)
         script: |
           keychain initialize
-          # Эта команда сама скачает рабочий сертификат и профиль напрямую из Apple
-          # Она игнорирует битые файлы в настройках Codemagic
+          
+          # 1. Принудительно удаляем старые сертификаты в Apple, чтобы освободить место
+          # и гарантировать создание новой пары "Ключ + Сертификат" на этой машине
+          app-store-connect certificates revoke --type IOS_DISTRIBUTION --all || true
+          
+          # 2. Создаем абсолютно новые файлы
           app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          
+          # 3. Применяем их
           keychain add-certificates
           xcode-project use-profiles
 
@@ -54,7 +57,7 @@ workflows:
             <key>provisioningProfiles</key>
             <dict>
               <key>com.tooyakov.x5lite</key>
-              <string>X5LITE_PROFILE_FINAL</string>
+              <string>Provisioning Profile for com.tooyakov.x5lite</string>
             </dict>
           </dict>
           </plist>
